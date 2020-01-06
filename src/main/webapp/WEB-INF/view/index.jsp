@@ -1,4 +1,8 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="common.jsp" %>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head>
 <body>
 <div class="table-responsive">
     <table class="table">
@@ -19,8 +23,8 @@
         </c:forEach>>
         </tbody>
     </table>
-    <a href="/export"><button type="button" class="btn btn-primary">导出</button></a>
-    <form class="form-horizontal" id="form_table" action="/import" enctype="multipart/form-data" method="post">
+    <a href="/action/exportExcel"><button type="button" class="btn btn-primary">导出</button></a>
+    <form class="form-horizontal" id="form_table" action="/action/import" enctype="multipart/form-data" method="post">
         <br/>
         <br/>
         <button type="submit" class="btn btn-primary">导入</button>

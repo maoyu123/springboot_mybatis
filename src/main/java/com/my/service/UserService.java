@@ -20,7 +20,7 @@ import java.util.List;
 
 @Service
 public class UserService {
-    @Autowired
+    @Autowired(required = false)
     private UserMapper userMapper;
 
     public List<User> findByName(String name) {
@@ -71,16 +71,16 @@ public class UserService {
             notNull = true;
         }
         User user;
-        for (int r = 1; r <= sheet.getLastRowNum(); r++) {//r = 2 表示从第三行开始循环 如果你的第三行开始是数据
+        for (int r = 2; r <= sheet.getLastRowNum(); r++) {//r = 2 表示从第三行开始循环 如果你的第三行开始是数据
             Row row = sheet.getRow(r);//通过sheet表单对象得到 行对象
             if (row == null){
                 continue;
             }
             //sheet.getLastRowNum() 的值是 10，所以Excel表中的数据至少是10条；不然报错 NullPointerException
             user = new User();
-            if( row.getCell(0).getCellType() !=1){//循环时，得到每一行的单元格进行判断
-                throw new MyException("导入失败(第"+(r+1)+"行,用户名请设为文本格式)");
-            }
+//            if( row.getCell(0).getCellType() !=1){//循环时，得到每一行的单元格进行判断
+//                throw new MyException("导入失败(第"+(r+1)+"行,用户名请设为文本格式)");
+//            }
             String username = row.getCell(0).getStringCellValue();//得到每一行第一个单元格的值
             int userId = Integer.parseInt(username);
             if("".equals(userId)){//判断是否为空
