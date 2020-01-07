@@ -55,8 +55,18 @@ public class UserController {
     @RequestMapping(value = "/ListUser",method = RequestMethod.POST)
     @ResponseBody
     public List<User> ListUser(){
-        return userService.ListUser();
+        List<User> user = userService.ListUser();
+        return user;
     }
+
+    @RequestMapping(value = "/listUser",method = RequestMethod.POST)
+    @ResponseBody
+    public List<User> listUser(Model model){
+        List<User> user = userService.ListUser();
+        model.addAttribute(user);
+        return user;
+    }
+
 
     @RequestMapping(value = "/fuzzyQuery",method = RequestMethod.POST)
     public List<User> fuzzyQuery(User user){
@@ -119,5 +129,4 @@ public class UserController {
         model.addAttribute("user",users);
         return "index";
     }
-
 }
