@@ -47,12 +47,12 @@
             // },
             success:function(data){
                 // $("#restult").val(data.resultInfo);
-                var json = JSON.stringify(data);
-                alert(json);
+                // var json = JSON.stringify(data);
+                // alert(json);
                 var str = "";
                 str +="<table><thead><tr><th>id</th><th>姓名</th><th>密码</th><th>number</th></tr></thead><tbody>";
                 $.each(data,function(index,element){
-                    str +="<tr><td>"+element['id']+"</td>&nbsp&nbsp<td>"+element['name']+"</td><td>"+element['password']+"</td><td>"+element['number']+"</td></tr>";
+                    str +="<tr><td>"+element['id']+"</td><td>"+element['name']+"</td><td>"+element['password']+"</td><td>"+element['number']+"</td></tr>";
                 })
                 str +="</tbody></table>";
                 $('body').append(str);

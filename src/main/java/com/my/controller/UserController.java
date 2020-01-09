@@ -8,12 +8,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 @RestController
 @RequestMapping(value = "/action", method={RequestMethod.GET,RequestMethod.POST})
@@ -63,10 +64,9 @@ public class UserController {
     @ResponseBody
     public List<User> listUser(Model model){
         List<User> user = userService.ListUser();
-        model.addAttribute(user);
+        model.addAttribute("user",user);
         return user;
     }
-
 
     @RequestMapping(value = "/fuzzyQuery",method = RequestMethod.POST)
     public List<User> fuzzyQuery(User user){
@@ -111,22 +111,4 @@ public class UserController {
         FileUtil.createFile(response, workbook);
     }
 
-    @RequestMapping(value = "/import")
-    public String exImport(@RequestParam(value = "filename")MultipartFile file, HttpSession session) {
-        boolean a = false;
-        String fileName = file.getOriginalFilename();
-        try {
-            a = userService.batchImport(fileName, file);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return "redirect:index";
-    }
-
-    @RequestMapping("/index")
-    public String showUser(Model model) {
-        List<User> users = userService.ListUser();
-        model.addAttribute("user",users);
-        return "index";
-    }
 }
