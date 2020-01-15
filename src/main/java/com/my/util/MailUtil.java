@@ -100,7 +100,7 @@ public class MailUtil {
             //FileSystemResource file = new FileSystemResource(new File("src/main/resources/static/image/email.png"))
             //添加多个图片可以使用多条 <img src='cid:" + rscId + "' > 和 mimeMessageHelper.addInline(rscId, res) 来实现
             mimeMessageHelper.addInline("picture", file);
-
+            System.out.println("开始发送邮件~~~");
             javaMailSender.send(mimeMailMessage);
             System.out.println("邮件发送成功，请注意查收~~~");
         } catch (Exception e) {
