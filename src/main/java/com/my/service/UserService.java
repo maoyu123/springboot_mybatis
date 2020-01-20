@@ -1,8 +1,10 @@
 package com.my.service;
 
+import com.alibaba.fastjson.JSON;
 import com.my.common.MyException;
 import com.my.entity.User;
 import com.my.mapper.UserMapper;
+import com.my.util.RedisUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -10,6 +12,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +26,12 @@ import java.util.List;
 public class UserService {
     @Autowired(required = false)
     private UserMapper userMapper;
+    @Autowired
+    private RedisTemplate redisTemplate;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
+    @Autowired
+    private RedisUtils redisUtils;
 
     public List<User> findByName(String name) {
         return userMapper.findUserByName(name);
@@ -32,7 +42,20 @@ public class UserService {
         return user;
     }
     public List<User> ListUser(){
-        return	userMapper.ListUser();
+        List<User>list =null;
+        List<Object> list1 = redisUtils.lRange("user:List", 0, -1);
+        List<User> s =(List<User>)(List)list1;
+        if(s.size()>0){
+            for(User user :s){
+                list.add(user);
+            }
+            System.out.println("redis缓存中的数据："+redisUtils.lRange("user:List",0,-1));
+        }else{
+            list = userMapper.ListUser();
+            System.out.println("将数据库中的数据刷进redis");
+            redisUtils.lPush("user:List", JSON.toJSONString(list));
+        }
+        return	list;
     }
 
 

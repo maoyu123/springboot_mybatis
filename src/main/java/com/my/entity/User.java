@@ -1,7 +1,8 @@
 package com.my.entity;
 
-public class User {
+import java.io.Serializable;
 
+public class User implements Serializable{
     private int id;
     private String name;
     private String password;
@@ -39,9 +40,8 @@ public class User {
         this.number = number;
     }
 
-    public String toSring(){
+   /* public String toSring(){
         return "User [id=" + id + ", name=" + name + ", password=" + password + ", number=" + number + "]";
-    }
-
+    }*/
 
 }
