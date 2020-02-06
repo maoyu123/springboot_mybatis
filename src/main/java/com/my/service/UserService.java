@@ -1,6 +1,5 @@
 package com.my.service;
 
-import com.alibaba.fastjson.JSON;
 import com.my.common.MyException;
 import com.my.entity.User;
 import com.my.mapper.UserMapper;
@@ -47,13 +46,14 @@ public class UserService {
         List<User> s =(List<User>)(List)list1;
         if(s.size()>0){
             for(User user :s){
-                list.add(user);
+                s.add(user);
             }
             System.out.println("redis缓存中的数据："+redisUtils.lRange("user:List",0,-1));
         }else{
             list = userMapper.ListUser();
             System.out.println("将数据库中的数据刷进redis");
-            redisUtils.lPush("user:List", JSON.toJSONString(list));
+//            redisUtils.lPush("user:List", JSON.toJSONString(list));
+            redisUtils.lPush("user:List", list);
         }
         return	list;
     }

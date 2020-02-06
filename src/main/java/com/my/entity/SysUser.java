@@ -2,17 +2,19 @@ package com.my.entity;
 
 import java.io.Serializable;
 
-public class User implements Serializable{
-    private int id;
+public class SysUser implements Serializable {
+
+    private static final long serialVersionUID = 632546413136822881L;
+
+    private Integer id;
     private String name;
     private String password;
-    private String number;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -30,18 +32,6 @@ public class User implements Serializable{
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getNumber() {
-        return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
-    }
-
-    public String toSring(){
-        return "User [id=" + id + ", name=" + name + ", password=" + password + ", number=" + number + "]";
     }
 
 }
