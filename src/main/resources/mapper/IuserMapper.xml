@@ -9,9 +9,9 @@
         <result property="number" column="number"/>
     </resultMap>
     <update id="Update" parameterType="com.my.entity.User">
-        update USER
-        set user.name = #{name},user.password=#{password},user.number = #{number}
-        where user.id = #{id}
+        UPDATE USER
+        SET USER.name = #{name},USER.password=#{password},USER.number = #{number}
+        WHERE USER.id = #{id}
     </update>
     <insert id="insertUser" parameterType="com.my.entity.User" keyProperty="id" useGeneratedKeys="true">
         INSERT into user (id,name,password,number )
