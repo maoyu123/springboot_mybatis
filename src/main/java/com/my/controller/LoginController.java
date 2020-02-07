@@ -27,6 +27,7 @@ public class LoginController {
     }
 
     @RequestMapping("/admin")
+    @ResponseBody
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String printAdmin(){
         return "你有ROLE_ADMIN角色";
