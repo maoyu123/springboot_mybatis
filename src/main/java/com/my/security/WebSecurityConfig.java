@@ -22,7 +22,6 @@ import javax.sql.DataSource;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsService userDetailsService;
-
     @Autowired(required = false)
     private DataSource dataSource;
     @Bean
@@ -60,6 +59,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/login")
                 //设置登录成功页
                 .defaultSuccessUrl("/").permitAll()
+                //添加登录失败异常处理
+                .failureForwardUrl("/login/error")
                 /*//自定义用户名和密码 ,默认为taylor swift
                 .usernameParameter("taylor")
                 .passwordParameter("swift")*/
