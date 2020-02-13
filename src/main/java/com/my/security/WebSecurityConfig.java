@@ -64,14 +64,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //设置登录成功页
                 .defaultSuccessUrl("/").permitAll()
                 //添加登录失败异常处理
-                .failureForwardUrl("/login/error")
+                .failureUrl("/login/error")
                 /*//自定义用户名和密码 ,默认为taylor swift
                 .usernameParameter("taylor")
                 .passwordParameter("swift")*/
                 .and()
                 //增加addFilterBefore()作用:在参数二之前执行参数一设置的过滤器
                 //spring security对于用户名面登录方式是通过UsernamePasswordAuthenticationFilter处理的，在这之前执行验证过滤器
-                .addFilterBefore(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)
+//                .addFilterAfter(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)
                 .logout().permitAll()
                 //添加自动登录
                 .and().rememberMe()
