@@ -24,18 +24,20 @@ public class VerifyFilter extends OncePerRequestFilter {
             String verifyCode = request.getParameter("verifyCode");
             if(!validateVerify(verifyCode)){
                 //手动设置异常
-                request.getSession().setAttribute("SPRING_SECURITY_LAST_ECEPTION",new DisabledException("验证码输入有误"));
+                request.getSession().setAttribute("SPRING_SECURITY_LAST_EXCEPTION",new DisabledException("验证码输入有误"));
                 request.getRequestDispatcher("/login/error").forward(request,response);
             }else {
                 filterChain.doFilter(request,response);
             }
+        }else{
+            filterChain.doFilter(request,response);
         }
     }
 
     private boolean validateVerify(String inputVerify){
-      //获取当前线程绑定的request对象
-       HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-        String validateCode =((String) request.getSession().getAttribute("inputVerify")).toLowerCase();
+        //获取当前线程绑定的request对象
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String validateCode =((String) request.getSession().getAttribute("validateCode")).toLowerCase();
         inputVerify = inputVerify.toLowerCase();
         System.out.println("验证码："+validateCode + "用户输入的"+inputVerify);
         return validateCode.equals(inputVerify);

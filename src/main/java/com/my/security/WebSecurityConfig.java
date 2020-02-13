@@ -71,7 +71,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //增加addFilterBefore()作用:在参数二之前执行参数一设置的过滤器
                 //spring security对于用户名面登录方式是通过UsernamePasswordAuthenticationFilter处理的，在这之前执行验证过滤器
-//                .addFilterAfter(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)
                 .logout().permitAll()
                 //添加自动登录
                 .and().rememberMe()
