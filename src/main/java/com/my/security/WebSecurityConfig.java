@@ -4,6 +4,8 @@ import com.my.filter.VerifyFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationDetailsSource;
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,10 +14,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.sql.DataSource;
 
 @Configuration
@@ -28,6 +31,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private DataSource dataSource;
     @Autowired(required = false)
     private VerifyFilter verifyFilter;
+    @Autowired
+    private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
+    @Autowired
+    private CustomAuthencationProvider customAuthencationProvider;
+    private AuthenticationManagerBuilder auth;
+
     @Bean
     public PersistentTokenRepository persistentTokenRepository(){
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
@@ -38,7 +47,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(new PasswordEncoder() {
+        /*auth.userDetailsService(userDetailsService).passwordEncoder(new PasswordEncoder() {
             @Override
             public String encode(CharSequence charSequence) {
                 return charSequence.toString();
@@ -49,7 +58,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 return s.equals(charSequence.toString());
             }
 
-        });
+        })*/
+        auth.authenticationProvider(customAuthencationProvider);
     }
 
     @Override
@@ -68,11 +78,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 /*//自定义用户名和密码 ,默认为taylor swift
                 .usernameParameter("taylor")
                 .passwordParameter("swift")*/
-                .and()
-                //增加addFilterBefore()作用:在参数二之前执行参数一设置的过滤器
+                //指定authenticationDetailsSource
+                .authenticationDetailsSource(authenticationDetailsSource)
+                /*//增加addFilterBefore()作用:在参数二之前执行参数一设置的过滤器
                 //spring security对于用户名面登录方式是通过UsernamePasswordAuthenticationFilter处理的，在这之前执行验证过滤器
-                .addFilterBefore(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)
-                .logout().permitAll()
+                .addFilterBefore(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)*/
+                .and().logout().permitAll()
                 //添加自动登录
                 .and().rememberMe()
                 .tokenRepository(persistentTokenRepository())
