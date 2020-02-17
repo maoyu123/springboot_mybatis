@@ -44,11 +44,25 @@ public class LoginController {
     }
 
 
-    @RequestMapping("/admin")
+   /* @RequestMapping("/admin")
     @ResponseBody
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String printAdmin(){
         return "你有ROLE_ADMIN角色";
+    }*/
+
+    @RequestMapping("/admin")
+    @ResponseBody
+    @PreAuthorize("hasPermission('/admin','r')")
+    public String printAdminR(){
+        return "有访问admin路径有/r的权限";
+    }
+
+    @RequestMapping("/admin/c")
+    @ResponseBody
+    @PreAuthorize("hasPermission('/admin','c')")
+    public String printAdminC(){
+        return "有访问admin路径有/c的权限";
     }
 
     @RequestMapping("/user")
