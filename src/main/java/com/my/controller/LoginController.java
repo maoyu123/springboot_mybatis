@@ -22,7 +22,6 @@ public class LoginController {
         //判断是否有对应权限
         String name = SecurityContextHolder.getContext().getAuthentication().getName();
         logger.info("当前登录用户："+name);
-
         return "home.html";
     }
 
