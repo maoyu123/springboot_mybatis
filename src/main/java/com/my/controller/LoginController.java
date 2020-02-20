@@ -2,22 +2,27 @@ package com.my.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.userdetails.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Controller
 public class LoginController {
     private Logger logger = LoggerFactory.getLogger(LoginController.class);
+    @Autowired
+    private SessionRegistry sessionRegistry;
 
     @RequestMapping("/")
     public String showHome(){
@@ -78,5 +83,29 @@ public class LoginController {
     @ResponseBody
     public String invalid(){
         return  "Session 已过期，请重新登录";
+    }
+
+    @GetMapping("/kick")
+    @ResponseBody
+    public  String removeUserSessionByUsername(@RequestParam String username){
+        int count = 0;
+        //获取session中所有用户信息
+        List<Object> users = sessionRegistry.getAllPrincipals();
+        for(Object principal:users){
+            if(principal instanceof User){
+                String principalName = ((User) principal).getUsername();
+                if(principalName.equals(username)){
+                    //参数二: 是否包含过期的session
+                    List<SessionInformation> sessionInfo = sessionRegistry.getAllSessions(principal, false);
+                    if(null != sessionInfo && sessionInfo.size()>0){
+                            for (SessionInformation sessionInformation:sessionInfo){
+                                sessionInformation.expireNow();
+                                count++;
+                            }
+                    }
+                }
+            }
+        }
+        return  "操作成功，共计剔除session"+count +"个";
     }
 }
