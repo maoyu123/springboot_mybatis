@@ -36,6 +36,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private AuthenticationDetailsSource<HttpServletRequest, WebAuthenticationDetails> authenticationDetailsSource;
     @Autowired
     private CustomAuthencationProvider customAuthencationProvider;
+    @Autowired
+    private CustomAuthentationSuccessHandler customAuthentationSuccessHandler;
+    @Autowired
+    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+
     private AuthenticationManagerBuilder auth;
 
     @Bean
@@ -82,10 +87,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 //设置登录页
                 .formLogin().loginPage("/login")
-                //设置登录成功页
+                /*//设置登录成功页
                 .defaultSuccessUrl("/").permitAll()
                 //添加登录失败异常处理
-                .failureUrl("/login/error")
+                .failureUrl("/login/error")*/
+                .successHandler(customAuthentationSuccessHandler)
+                .failureHandler(customAuthenticationFailureHandler)
+                .permitAll()
                 /*//自定义用户名和密码 ,默认为taylor swift
                 .usernameParameter("taylor")
                 .passwordParameter("swift")*/
