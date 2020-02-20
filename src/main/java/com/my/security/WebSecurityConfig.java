@@ -82,12 +82,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 //匿名的url，填写在下边 这样在未登录状态下也能正常访问
-                .antMatchers("/getVerifyCode").permitAll()
-                .antMatchers("/login/invalid").permitAll()
+                .antMatchers("/getVerifyCode","/login/invalid").permitAll()
                 .anyRequest().authenticated()
-                .and()
-                .sessionManagement()
-                    .invalidSessionUrl("/login/invalid")
                 .and()
                 //设置登录页
                 .formLogin().loginPage("/login")
@@ -107,11 +103,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //spring security对于用户名面登录方式是通过UsernamePasswordAuthenticationFilter处理的，在这之前执行验证过滤器
                 .addFilterBefore(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)*/
                 .and().logout().permitAll()
+                .and()
+                .sessionManagement()
+                    .invalidSessionUrl("/login/invalid")
+                    .maximumSessions(1)
+                    .maxSessionsPreventsLogin(false)
+                    .expiredSessionStrategy(new CustomExpiredSessionStrategy());
                 //添加自动登录
-                .and().rememberMe()
-                .tokenRepository(persistentTokenRepository())
+//                .and()
+//                .rememberMe()
+//                .tokenRepository(persistentTokenRepository())
                 //有效时间：单位s
-                .tokenValiditySeconds(60).userDetailsService(userDetailsService);
+//                .tokenValiditySeconds(60).userDetailsService(userDetailsService);
 
                 //关闭scrf 跨域
                 http.csrf().disable();
