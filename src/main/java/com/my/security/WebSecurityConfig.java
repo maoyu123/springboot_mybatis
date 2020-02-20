@@ -83,7 +83,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 //匿名的url，填写在下边 这样在未登录状态下也能正常访问
                 .antMatchers("/getVerifyCode").permitAll()
+                .antMatchers("/login/invalid").permitAll()
                 .anyRequest().authenticated()
+                .and()
+                .sessionManagement()
+                    .invalidSessionUrl("/login/invalid")
                 .and()
                 //设置登录页
                 .formLogin().loginPage("/login")

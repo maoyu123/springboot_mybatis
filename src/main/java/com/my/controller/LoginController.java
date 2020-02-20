@@ -2,12 +2,14 @@ package com.my.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -69,5 +71,12 @@ public class LoginController {
     @PreAuthorize("hasRole('ROLE_USER')")
     public String printUser() {
         return "如果你看见这句话，说明你有ROLE_USER角色";
+    }
+
+    @RequestMapping("/login/invalid")
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public String invalid(){
+        return  "Session 已过期，请重新登录";
     }
 }
