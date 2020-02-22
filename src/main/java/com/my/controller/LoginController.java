@@ -92,6 +92,7 @@ public class LoginController {
         //获取session中所有用户信息
         List<Object> users = sessionRegistry.getAllPrincipals();
         for(Object principal:users){
+            //判断指定用户的principal  信息和输入的用户信息是否一致
             if(principal instanceof User){
                 String principalName = ((User) principal).getUsername();
                 if(principalName.equals(username)){

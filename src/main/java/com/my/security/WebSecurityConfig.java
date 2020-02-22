@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
@@ -42,7 +43,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomAuthentationSuccessHandler customAuthentationSuccessHandler;
     @Autowired
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-
+    @Autowired
+    private CustomLogoutSuccessHandler customLogoutSuccessHandler;
     private AuthenticationManagerBuilder auth;
 
     @Bean
@@ -109,7 +111,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 /*//增加addFilterBefore()作用:在参数二之前执行参数一设置的过滤器
                 //spring security对于用户名面登录方式是通过UsernamePasswordAuthenticationFilter处理的，在这之前执行验证过滤器
                 .addFilterBefore(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)*/
-                .and().logout().permitAll()
+                .and()
+                .logout().logoutUrl("/signout").deleteCookies("JSESSIONID").logoutSuccessHandler(customLogoutSuccessHandler)
+                .permitAll()
                 .and()
                 .sessionManagement()
                     .invalidSessionUrl("/login/invalid")
