@@ -5,10 +5,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.userdetails.User;
@@ -108,5 +111,17 @@ public class LoginController {
             }
         }
         return  "操作成功，共计剔除session"+count +"个";
+    }
+
+    //获取用户认证信息
+    @RequestMapping("/me")
+    @ResponseBody
+    public Object me(Authentication authentication){
+        return  authentication;
+    }
+    @RequestMapping("/she")
+    @ResponseBody
+    public Object me(@AuthenticationPrincipal UserDetails userDetails){
+        return userDetails;
     }
 }
