@@ -112,7 +112,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //spring security对于用户名面登录方式是通过UsernamePasswordAuthenticationFilter处理的，在这之前执行验证过滤器
                 .addFilterBefore(new VerifyFilter(), UsernamePasswordAuthenticationFilter.class)*/
                 .and()
-                .logout().logoutUrl("/signout").deleteCookies("JSESSIONID").logoutSuccessHandler(customLogoutSuccessHandler)
+                .logout().deleteCookies("JSESSIONID").logoutSuccessHandler(customLogoutSuccessHandler)
                 .permitAll()
                 .and()
                 .sessionManagement()
