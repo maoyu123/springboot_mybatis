@@ -3,6 +3,7 @@ package com.my.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.server.Session;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -18,8 +19,11 @@ import org.springframework.security.core.userdetails.User;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class LoginController {
@@ -124,4 +128,19 @@ public class LoginController {
     public Object me(@AuthenticationPrincipal UserDetails userDetails){
         return userDetails;
     }
+
+    //读取短信验证码
+    @RequestMapping("/sms/code")
+    @ResponseBody
+    public void sms(String mobile, HttpSession session){
+        int code = (int) Math.ceil(Math.random() * 9000 + 1000);
+
+        Map<String,Object>map = new HashMap<>();
+        map.put("mobile",mobile);
+        map.put("code",code);
+        session.setAttribute("smsCode",map);
+
+        logger.info("{}：为 {} 设置短信验证码：{}", session.getId(), mobile, code);
+    }
+
 }

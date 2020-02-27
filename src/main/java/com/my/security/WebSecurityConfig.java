@@ -45,6 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
     @Autowired
     private CustomLogoutSuccessHandler customLogoutSuccessHandler;
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
     private AuthenticationManagerBuilder auth;
 
     @Bean
@@ -89,9 +91,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
+        http.apply(smsCodeAuthenticationSecurityConfig).and().
+        authorizeRequests()
                 //匿名的url，填写在下边 这样在未登录状态下也能正常访问
-                .antMatchers("/getVerifyCode","/login/invalid").permitAll()
+                .antMatchers("/getVerifyCode","/login/invalid","/sms/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 //设置登录页
