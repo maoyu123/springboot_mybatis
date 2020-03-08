@@ -12,9 +12,13 @@ public class TestActivemqMain {
         /*testMQProducerQuene testMQProducerQuene = new testMQProducerQuene();
 //        testMQProducerQuene.testMQProducerQueue();
         testMQProducerQuene.TestMQConsumerQueue();*/
-        TestTopic testTopic = new TestTopic();
+        /*TestTopic testTopic = new TestTopic();
         testTopic.TestMQTopicConsumerQueue();
-        testTopic.testMQTopicProducerQueue();
+        testTopic.testMQTopicProducerQueue();*/
+        //测试事务
+        TestMQProducerQuene testMQProducerQuene = new TestMQProducerQuene();
+        testMQProducerQuene.testMQProducerQueue();
+        testMQProducerQuene.TestMQConsumerQueue();
 
     }
 }
