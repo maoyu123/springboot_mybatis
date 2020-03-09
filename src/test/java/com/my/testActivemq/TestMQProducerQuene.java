@@ -13,8 +13,8 @@ public class TestMQProducerQuene {
 
     public void testMQProducerQueue() throws JMSException {
         //1.创建工厂连接对象，指定ip和端口号
-//        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.31.224:61617");
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.31.224:61617");
+//        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
         //2.使用连接工厂创建连接对象
         Connection connection = connectionFactory.createConnection();
         //3.开启连接
@@ -38,8 +38,8 @@ public class TestMQProducerQuene {
     //接收代码
     public void TestMQConsumerQueue() throws JMSException, IOException {
         //1.创建连接工厂，指定ip和port
-//        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.31.224:61617");
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.31.224:61617");
+//        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
         //2.创建连接对象
         Connection connection = connectionFactory.createConnection();
         //3.开启连接
