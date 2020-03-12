@@ -22,11 +22,12 @@ public class TestMQProducerQuene {
         //4.使用连接对象创建会话(session)对象
         Session session = connection.createSession(true,Session.CLIENT_ACKNOWLEDGE);
         //5.使用会话对象创建目标对象
-        Queue queue = session.createQueue("test-queue");
+        Queue queue = session.createQueue("test-queue-jdbc");
         //6.使用会话对象创建生产者对象
         MessageProducer producer = session.createProducer(queue);
+        producer.setDeliveryMode(DeliveryMode.PERSISTENT);
         //7.使用会话对象创建一个消息对象
-        TextMessage textMessage = session.createTextMessage("hello!test-queue!galgadot");
+        TextMessage textMessage = session.createTextMessage("hello!JDBC!galgadot");
         //8.发送消息
         producer.send(textMessage);
         //9.关闭资源
@@ -47,7 +48,7 @@ public class TestMQProducerQuene {
         //4.创建session会话
         Session session = connection.createSession(true,Session.CLIENT_ACKNOWLEDGE);
         //5.使用会话对象创建目标对象，包含queue和topic
-        Queue queue = session.createQueue("test-queue");
+        Queue queue = session.createQueue("test-queue-jdbc");
         //6.使用会话对象创建生产者对象
         MessageConsumer consumer = session.createConsumer(queue);
         //7.向consumer对象中设置messageListener对象，用来接收消息

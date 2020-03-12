@@ -17,7 +17,7 @@ public class JMSTopicConsumer {
         connection.setClientID("123456##########");
         Session session = connection.createSession(false,Session.AUTO_ACKNOWLEDGE);
         Topic topic = session.createTopic("Topic-Persist");
-        TopicSubscriber topicSubscriber = session.createDurableSubscriber(topic,"remark....");
+        TopicSubscriber topicSubscriber = session.createDurableSubscriber(topic,"remark....test-jdbc");
         connection.start();
         Message message = topicSubscriber.receive();
             while (null != message){

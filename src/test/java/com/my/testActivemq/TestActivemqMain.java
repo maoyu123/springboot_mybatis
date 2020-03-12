@@ -9,16 +9,16 @@ import java.io.IOException;
  */
 public class TestActivemqMain {
     public static void main(String[] args) throws JMSException, IOException {
-        /*testMQProducerQuene testMQProducerQuene = new testMQProducerQuene();
-//        testMQProducerQuene.testMQProducerQueue();
-        testMQProducerQuene.TestMQConsumerQueue();*/
+        TestMQProducerQuene testMQProducerQuene = new TestMQProducerQuene();
+        testMQProducerQuene.testMQProducerQueue();
+//        testMQProducerQuene.TestMQConsumerQueue();
         /*TestTopic testTopic = new TestTopic();
         testTopic.TestMQTopicConsumerQueue();
         testTopic.testMQTopicProducerQueue();*/
         //测试事务
-        TestMQProducerQuene testMQProducerQuene = new TestMQProducerQuene();
+      /*  TestMQProducerQuene testMQProducerQuene = new TestMQProducerQuene();
         testMQProducerQuene.testMQProducerQueue();
-        testMQProducerQuene.TestMQConsumerQueue();
+        testMQProducerQuene.TestMQConsumerQueue();*/
 
     }
 }
