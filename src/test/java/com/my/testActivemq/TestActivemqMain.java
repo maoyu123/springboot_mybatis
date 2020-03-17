@@ -10,8 +10,8 @@ import java.io.IOException;
 public class TestActivemqMain {
     public static void main(String[] args) throws JMSException, IOException {
         TestMQProducerQuene testMQProducerQuene = new TestMQProducerQuene();
-        testMQProducerQuene.testMQProducerQueue();
-//        testMQProducerQuene.TestMQConsumerQueue();
+//        testMQProducerQuene.testMQProducerQueue();
+        testMQProducerQuene.TestMQConsumerQueue();
         /*TestTopic testTopic = new TestTopic();
         testTopic.TestMQTopicConsumerQueue();
         testTopic.testMQTopicProducerQueue();*/

@@ -13,7 +13,8 @@ public class TestMQProducerQuene {
 
     public void testMQProducerQueue() throws JMSException {
         //1.创建工厂连接对象，指定ip和端口号
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.31.224:61617");
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("failover:(tcp://192.168.31.224:61616,tcp://192.168.31.224:61617,tcp://192.168.31.224:61618)?randomize=false");
+//        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.31.224:61617");
 //        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
         //2.使用连接工厂创建连接对象
         Connection connection = connectionFactory.createConnection();
@@ -22,12 +23,12 @@ public class TestMQProducerQuene {
         //4.使用连接对象创建会话(session)对象
         Session session = connection.createSession(true,Session.CLIENT_ACKNOWLEDGE);
         //5.使用会话对象创建目标对象
-        Queue queue = session.createQueue("test-queue-jdbc");
+        Queue queue = session.createQueue("queue-cluster");
         //6.使用会话对象创建生产者对象
         MessageProducer producer = session.createProducer(queue);
         producer.setDeliveryMode(DeliveryMode.PERSISTENT);
         //7.使用会话对象创建一个消息对象
-        TextMessage textMessage = session.createTextMessage("hello!JDBC!galgadot");
+        TextMessage textMessage = session.createTextMessage("hello!cluster!galgadot");
         //8.发送消息
         producer.send(textMessage);
         //9.关闭资源
@@ -39,7 +40,8 @@ public class TestMQProducerQuene {
     //接收代码
     public void TestMQConsumerQueue() throws JMSException, IOException {
         //1.创建连接工厂，指定ip和port
-        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.31.224:61617");
+        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("failover:(tcp://192.168.31.224:61616,tcp://192.168.31.224:61617,tcp://192.168.31.224:61618)?randomize=false");
+//        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://192.168.31.224:61617");
 //        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory("tcp://localhost:61616");
         //2.创建连接对象
         Connection connection = connectionFactory.createConnection();
@@ -48,7 +50,7 @@ public class TestMQProducerQuene {
         //4.创建session会话
         Session session = connection.createSession(true,Session.CLIENT_ACKNOWLEDGE);
         //5.使用会话对象创建目标对象，包含queue和topic
-        Queue queue = session.createQueue("test-queue-jdbc");
+        Queue queue = session.createQueue("queue-cluster");
         //6.使用会话对象创建生产者对象
         MessageConsumer consumer = session.createConsumer(queue);
         //7.向consumer对象中设置messageListener对象，用来接收消息
